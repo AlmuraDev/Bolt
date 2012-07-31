@@ -117,24 +117,6 @@
 					</includes>
 				</configuration>
 			</plugin>
-			<!-- Version strip plugin -->
-			<plugin>
-				<groupId>com.sourcesense.maven</groupId>
-				<artifactId>maven-nosnapshot-plugin</artifactId>
-				<version>0.0.7-SNAPSHOT</version>
-				<executions>
-					<execution>
-						<phase>initialize</phase>
-						<goals>
-							<goal>strip</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<version>${project.version}</version>
-					<propertyName>releaseVersion</propertyName>
-				</configuration>
-			</plugin>
 			<!-- Compiler plugin -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
