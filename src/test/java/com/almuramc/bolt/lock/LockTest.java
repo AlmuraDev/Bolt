@@ -24,21 +24,23 @@
  * <http://www.gnu.org/licenses/> for the GNU General Public License and
  * the GNU Lesser Public License.
  */
-package com.almuramc.bolt.registry;
+package com.almuramc.bolt.lock;
 
-import java.util.Collection;
-import java.util.Set;
+import com.almuramc.bolt.lock.type.MaterialLock;
 
-import com.almuramc.bolt.lock.Lock;
+import org.junit.Test;
 
-public interface Registry {
-	public Registry addLock(Lock lock);
+import static org.junit.Assert.assertEquals;
 
-	public Registry addLocks(Collection<Lock> locks);
+public class LockTest {
+	@Test
+	public void lockEqualsTest() {
+		Lock a = new Lock("Locksmith", null, 1, 1, 1);
+		Lock b = new Lock("Locksmith", null, 1, 1, 1);
+		assertEquals(a, b);
 
-	public Registry removeLock(Lock lock);
-
-	public Registry removeLocks(Collection<Lock> locks);
-
-	public Set<Lock> getAll();
+		MaterialLock c = new MaterialLock("Locksmith", null, 1, 1, 1, 1);
+		MaterialLock d = new MaterialLock("Locksmith", null, 1, 1, 1, 1);
+		assertEquals(c, d);
+	}
 }

@@ -26,19 +26,46 @@
  */
 package com.almuramc.bolt.registry;
 
-import java.util.Collection;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.HashSet;
 
 import com.almuramc.bolt.lock.Lock;
+import com.almuramc.bolt.registry.basic.BasicLockRegistry;
 
-public interface Registry {
-	public Registry addLock(Lock lock);
+import org.junit.Before;
+import org.junit.Test;
 
-	public Registry addLocks(Collection<Lock> locks);
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-	public Registry removeLock(Lock lock);
+public class RegistryTest {
+	private BasicLockRegistry registry;
 
-	public Registry removeLocks(Collection<Lock> locks);
+	@Before
+	public void initialize() {
+		registry = new BasicLockRegistry();
+	}
 
-	public Set<Lock> getAll();
+	@Test
+	public void testRegistryAdd() {
+		HashSet<Lock> locks = new HashSet<Lock>();
+		for (int i = 0; i < 2; i++) {
+			locks.add(new Lock("Locksmith", null, i, i, i));
+		}
+
+		registry.addLocks(locks);
+		assertEquals(locks, registry.getAll());
+	}
+
+	@Test
+	public void testRegistrySubtract() {
+		HashSet<Lock> locks = new HashSet<Lock>();
+		for (int i = 0; i < 2; i++) {
+			locks.add(new Lock("Locksmith", null, i, i, i));
+		}
+
+		registry.addLocks(locks);
+		registry.removeLocks(locks);
+		assertTrue(registry.getAll().isEmpty());
+	}
 }
