@@ -26,7 +26,6 @@
  */
 package com.almuramc.bolt.registry;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 
 import com.almuramc.bolt.lock.Lock;

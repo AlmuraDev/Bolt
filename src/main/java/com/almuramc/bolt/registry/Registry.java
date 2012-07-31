@@ -27,18 +27,49 @@
 package com.almuramc.bolt.registry;
 
 import java.util.Collection;
-import java.util.Set;
 
 import com.almuramc.bolt.lock.Lock;
 
+/**
+ * The blueprint for an object representing a registry. Implementations are welcome to provide their
+ * own characteristics,
+ */
 public interface Registry {
+	/**
+	 * Adds a lock to the registry.
+	 * @param lock The lock to add
+	 * @return The Registry so it can be chained
+	 * @throws NullPointerException If the lock is null
+	 */
 	public Registry addLock(Lock lock);
 
+	/**
+	 * Adds a collection of locks to the registry.
+	 * @param locks The locks to add
+	 * @return The Registry so it can be chained
+	 * @throws NullPointerException If the lock collection is null
+	 */
 	public Registry addLocks(Collection<Lock> locks);
 
+	/**
+	 * Removes a lock from the registry.
+	 * @param lock The lock to remove
+	 * @return The Registry so it can be chained
+	 * @throws NullPointerException If the lock is null
+	 */
 	public Registry removeLock(Lock lock);
 
+	/**
+	 * Removes a collection of locks from the registry.
+	 * @param locks The locks to remove
+	 * @return The Registry so it can be chained
+	 * @throws NullPointerException If lock collection is null
+	 */
 	public Registry removeLocks(Collection<Lock> locks);
 
-	public Set<Lock> getAll();
+	/**
+	 * Returns the Collection of locks this registry has stored. The Collection can be empty.
+	 * @return The Collection containing the locks
+	 */
+	public Collection<Lock> getAll();
 }
