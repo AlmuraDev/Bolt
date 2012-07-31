@@ -26,7 +26,8 @@
  */
 package com.almuramc.bolt.lock;
 
-import com.almuramc.bolt.lock.type.MaterialLock;
+import com.almuramc.bolt.lock.type.single.MaterialPointLock;
+import com.almuramc.bolt.lock.type.PointLock;
 
 import org.junit.Test;
 
@@ -35,12 +36,12 @@ import static org.junit.Assert.assertEquals;
 public class LockTest {
 	@Test
 	public void lockEqualsTest() {
-		Lock a = new Lock("Locksmith", null, 1, 1, 1);
-		Lock b = new Lock("Locksmith", null, 1, 1, 1);
+		PointLock a = new PointLock("Locksmith", null, 1, 1, 1);
+		PointLock b = new PointLock("Locksmith", null, 1, 1, 1);
 		assertEquals(a, b);
 
-		MaterialLock c = new MaterialLock("Locksmith", null, 1, 1, 1, 1);
-		MaterialLock d = new MaterialLock("Locksmith", null, 1, 1, 1, 1);
+		MaterialPointLock c = new MaterialPointLock("Locksmith", null, 1, 1, 1, 1);
+		MaterialPointLock d = new MaterialPointLock("Locksmith", null, 1, 1, 1, 1);
 		assertEquals(c, d);
 	}
 }

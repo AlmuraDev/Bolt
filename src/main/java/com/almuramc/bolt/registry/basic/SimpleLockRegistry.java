@@ -33,10 +33,13 @@ import java.util.HashSet;
 import com.almuramc.bolt.lock.Lock;
 import com.almuramc.bolt.registry.Registry;
 
-public class BasicLockRegistry implements Registry {
+/**
+ * Simple registry of locks
+ */
+public class SimpleLockRegistry implements Registry {
 	private final HashSet<Lock> registry;
 
-	public BasicLockRegistry() {
+	public SimpleLockRegistry() {
 		registry = new HashSet<Lock>();
 	}
 

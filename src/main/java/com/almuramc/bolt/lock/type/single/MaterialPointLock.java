@@ -24,26 +24,26 @@
  * <http://www.gnu.org/licenses/> for the GNU General Public License and
  * the GNU Lesser Public License.
  */
-package com.almuramc.bolt.lock.type;
+package com.almuramc.bolt.lock.type.single;
 
 import java.util.List;
 
-import com.almuramc.bolt.lock.Lock;
+import com.almuramc.bolt.lock.type.PointLock;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * The basic id-based Material lock.
  */
-public class MaterialLock extends Lock {
+public class MaterialPointLock extends PointLock {
 	private int id;
 
-	public MaterialLock(String owner, List<String> coowners, int x, int y, int z, int id) {
+	public MaterialPointLock(String owner, List<String> coowners, int x, int y, int z, int id) {
 		super(owner, coowners, x, y, z);
 		this.id = id;
 	}
 
-	public MaterialLock(String owner, int x, int y, int z, int id) {
+	public MaterialPointLock(String owner, int x, int y, int z, int id) {
 		this(owner, null, x, y, z, id);
 	}
 
@@ -56,7 +56,7 @@ public class MaterialLock extends Lock {
 		if (!super.equals(obj)) {
 			return false;
 		}
-		final MaterialLock other = (MaterialLock) obj;
+		final MaterialPointLock other = (MaterialPointLock) obj;
 		return new org.apache.commons.lang3.builder.EqualsBuilder()
 				.append(this.id, other.id)
 				.isEquals();

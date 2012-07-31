@@ -29,87 +29,35 @@ package com.almuramc.bolt.lock;
 import java.io.Serializable;
 import java.util.List;
 
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-
 /**
- * The blueprint for an object representing a lock. Implementations are welcome to provide their
- * own characteristics.
+ * The core lock.
  */
-public class Lock implements Serializable {
-	//Core lock attributes
-	private final int x, y, z;
-	private String owner;
-	private List<String> coowners;
-	//Hashcode
-	private boolean isHashed = false;
-	private int hashcode = 0;
-
-	public Lock(String owner, List<String> coowners, int x, int y, int z) {
-		this.owner = owner;
-		this.coowners = coowners;
-		this.x = x;
-		this.y = y;
-		this.z = z;
-	}
-
+public abstract class Lock implements Serializable {
 	/**
 	 * Gets the owner of this lock
 	 * @return The name of the owner
 	 */
-	public String getOwner() {
-		return owner;
-	}
+	public abstract String getOwner();
 
 	/**
 	 * Sets the owner of this lock.
 	 * @param owner The name of the new owner of this lock.
 	 */
-	public void setOwner(String owner) {
-		this.owner = owner;
-	}
+	public abstract void setOwner(String owner);
 
 	/**
 	 * Gets the Co-Owners of this lock. A null value indicates
 	 * that the lock is available to everyone.
 	 * @return List of names representing co-owners or null for everyone
 	 */
-	public List getCoOwners() {
-		return coowners;
-	}
+	public abstract List<String> getCoOwners();
 
 	/**
 	 * Sets the Co-Owners of this lock. A null value indicates
 	 * that the lock will be available to everyone.
 	 * @param coowners List of names representing co-owners
 	 */
-	public void setCoOwners(List<String> coowners) {
-		this.coowners = coowners;
-	}
-
-	/**
-	 * Gets the x coordinate of the position of this lock.
-	 * @return The x coordinate of this lock's position
-	 */
-	public int getX() {
-		return x;
-	}
-
-	/**
-	 * Gets the y coordinate of the position of this lock.
-	 * @return The y coordinate of this lock's position
-	 */
-	public int getY() {
-		return y;
-	}
-
-	/**
-	 * Gets the z coordinate of the position of this lock.
-	 * @return The z coordinate of this lock's position
-	 */
-	public int getZ() {
-		return z;
-	}
+	public abstract void setCoOwners(List<String> coowners);
 
 	/**
 	 * Returns whether one object is equal to another.
@@ -117,48 +65,12 @@ public class Lock implements Serializable {
 	 * @return True if equals, false if not
 	 */
 	@Override
-	public boolean equals(Object obj) {
-		if (obj == null) {
-			return false;
-		}
-		if (!(obj instanceof Lock)) {
-			return false;
-		}
-		final Lock other = (Lock) obj;
-		return new org.apache.commons.lang3.builder.EqualsBuilder()
-				.append(this.owner, other.owner)
-				.append(this.coowners, other.coowners)
-				.append(this.x, other.x)
-				.append(this.y, other.y)
-				.append(this.z, other.z)
-				.isEquals();
-	}
+	public abstract boolean equals(Object obj);
 
 	/**
 	 * Returns a string representation of this object.
 	 * @return String object representing detailed information of this object
 	 */
 	@Override
-	public String toString() {
-		return new ToStringBuilder(this)
-				.append("owner", owner)
-				.append("coowners", coowners)
-				.append("x", x)
-				.append("y", y)
-				.append("z", z)
-				.toString();
-	}
-
-	/**
-	 * Generates a unique hashcode for this object, used when comparing.
-	 * @return the hashcode of this object.
-	 */
-	@Override
-	public int hashCode() {
-		if (!isHashed) {
-			hashcode = new HashCodeBuilder(7, 11).append(getX()).append(getY()).append(getZ()).toHashCode();
-			isHashed = true;
-		}
-		return hashcode;
-	}
+	public abstract String toString();
 }

@@ -29,7 +29,8 @@ package com.almuramc.bolt.registry;
 import java.util.HashSet;
 
 import com.almuramc.bolt.lock.Lock;
-import com.almuramc.bolt.registry.basic.BasicLockRegistry;
+import com.almuramc.bolt.lock.type.PointLock;
+import com.almuramc.bolt.registry.basic.SimpleLockRegistry;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -38,18 +39,18 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class RegistryTest {
-	private BasicLockRegistry registry;
+	private SimpleLockRegistry registry;
 
 	@Before
 	public void initialize() {
-		registry = new BasicLockRegistry();
+		registry = new SimpleLockRegistry();
 	}
 
 	@Test
 	public void testRegistryAdd() {
 		HashSet<Lock> locks = new HashSet<Lock>();
 		for (int i = 0; i < 2; i++) {
-			locks.add(new Lock("Locksmith", null, i, i, i));
+			locks.add(new PointLock("Locksmith", null, i, i, i));
 		}
 
 		registry.addLocks(locks);
@@ -60,7 +61,7 @@ public class RegistryTest {
 	public void testRegistrySubtract() {
 		HashSet<Lock> locks = new HashSet<Lock>();
 		for (int i = 0; i < 2; i++) {
-			locks.add(new Lock("Locksmith", null, i, i, i));
+			locks.add(new PointLock("Locksmith", null, i, i, i));
 		}
 
 		registry.addLocks(locks);
