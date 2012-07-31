@@ -30,7 +30,7 @@ import java.util.HashSet;
 
 import com.almuramc.bolt.lock.Lock;
 import com.almuramc.bolt.lock.type.PointLock;
-import com.almuramc.bolt.registry.basic.SimpleLockRegistry;
+import com.almuramc.bolt.registry.type.basic.SimpleLockRegistry;
 
 import org.junit.Before;
 import org.junit.Test;

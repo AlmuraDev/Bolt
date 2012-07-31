@@ -24,19 +24,22 @@
  * <http://www.gnu.org/licenses/> for the GNU General Public License and
  * the GNU Lesser Public License.
  */
-package com.almuramc.bolt.registry.basic;
+package com.almuramc.bolt.registry.type.basic;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 
 import com.almuramc.bolt.lock.Lock;
-import com.almuramc.bolt.registry.Registry;
+import com.almuramc.bolt.registry.type.LockRegistry;
+
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * Simple registry of locks
  */
-public class SimpleLockRegistry implements Registry {
+public class SimpleLockRegistry extends LockRegistry {
 	private final HashSet<Lock> registry;
 
 	public SimpleLockRegistry() {
@@ -44,7 +47,7 @@ public class SimpleLockRegistry implements Registry {
 	}
 
 	@Override
-	public Registry addLock(Lock lock) {
+	public LockRegistry addLock(Lock lock) {
 		if (lock == null) {
 			throw new NullPointerException("Trying to add a null lock to the registry!");
 		}
@@ -53,7 +56,7 @@ public class SimpleLockRegistry implements Registry {
 	}
 
 	@Override
-	public Registry addLocks(Collection<Lock> locks) {
+	public LockRegistry addLocks(Collection<Lock> locks) {
 		if (locks == null) {
 			throw new NullPointerException("Trying to add a null collection of locks to the registry!");
 		}
@@ -62,7 +65,7 @@ public class SimpleLockRegistry implements Registry {
 	}
 
 	@Override
-	public Registry removeLock(Lock lock) {
+	public LockRegistry removeLock(Lock lock) {
 		if (lock == null) {
 			throw new NullPointerException("Trying to remove a null lock from the registry!");
 		}
@@ -71,7 +74,7 @@ public class SimpleLockRegistry implements Registry {
 	}
 
 	@Override
-	public Registry removeLocks(Collection<Lock> locks) {
+	public LockRegistry removeLocks(Collection<Lock> locks) {
 		if (locks == null) {
 			throw new NullPointerException("Trying to remove a null collection of locks from the registry!");
 		}
@@ -82,5 +85,16 @@ public class SimpleLockRegistry implements Registry {
 	@Override
 	public Collection<Lock> getAll() {
 		return Collections.unmodifiableSet(registry);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (!super.equals(obj)) {
+			return false;
+		}
+		if (!(obj instanceof SimpleLockRegistry)) {
+			return false;
+		}
+		return true;
 	}
 }
