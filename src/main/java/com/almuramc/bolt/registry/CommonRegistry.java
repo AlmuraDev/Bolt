@@ -49,11 +49,11 @@ public class CommonRegistry implements Registry {
 	}
 
 	@Override
-	public Registry addLock(int x, int y, int z, Lock lock) {
+	public Registry addLock(Lock lock) {
 		if (lock == null) {
 			throw new NullPointerException("Trying to add a null lock to the registry!");
 		}
-		registry.put(x, y, z, lock);
+		registry.put(lock.getX(), lock.getY(), lock.getZ(), lock);
 		return this;
 	}
 

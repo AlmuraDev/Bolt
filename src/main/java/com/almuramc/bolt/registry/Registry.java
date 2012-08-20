@@ -41,7 +41,7 @@ public interface Registry {
 	 * @return The Registry so it can be chained
 	 * @throws NullPointerException If the lock is null
 	 */
-	public Registry addLock(int x, int y, int z, Lock lock);
+	public Registry addLock(Lock lock);
 
 	/**
 	 * Removes a lock from the registry.

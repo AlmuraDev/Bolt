@@ -30,6 +30,7 @@ import java.util.HashSet;
 
 import com.almuramc.bolt.lock.Lock;
 import com.almuramc.bolt.lock.type.BasicLock;
+import com.almuramc.bolt.lock.type.single.IdLock;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -47,24 +48,20 @@ public class RegistryTest {
 
 	@Test
 	public void testRegistryAdd() {
-		HashSet<Lock> locks = new HashSet<Lock>();
-		for (int i = 0; i < 2; i++) {
-			locks.add(new BasicLock("Locksmith", null, i, i, i));
-		}
-
-		registry.addLocks(locks);
-		assertEquals(locks, registry.getAll());
+		IdLock a = new IdLock("LockSmith", null, 1, 1, 1, 129);
+		IdLock b = new IdLock("LockSmith", null, 1, 2, 1, 129);
+		registry.addLock(a);
+		registry.addLock(b);
+		assertTrue(registry.getLock(1, 1, 1).equals(a));
+		assertTrue(registry.getLock(1, 2, 1).equals(b));
 	}
 
 	@Test
 	public void testRegistrySubtract() {
-		HashSet<Lock> locks = new HashSet<Lock>();
-		for (int i = 0; i < 2; i++) {
-			locks.add(new BasicLock("Locksmith", null, i, i, i));
+		for (int i = 0; i < 200000000; i++) {
+			registry.addLock(new BasicLock("Locksmith", null, i, i, i));
 		}
-
-		registry.addLocks(locks);
-		registry.removeLocks(locks);
-		assertTrue(registry.getAll().isEmpty());
+		registry.removeLock(1, 1, 1);
+		assertTrue(registry.getLock(1, 1, 1) == null);
 	}
 }
