@@ -36,6 +36,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 public class RegistryTest {
@@ -54,14 +56,17 @@ public class RegistryTest {
 		registry.addLock(b);
 		assertTrue(registry.getLock(1, 1, 1).equals(a));
 		assertTrue(registry.getLock(1, 2, 1).equals(b));
+		assertNull(registry.getLock(1, 3, 1));
 	}
 
 	@Test
 	public void testRegistrySubtract() {
-		for (int i = 0; i < 200000000; i++) {
+		for (int i = 0; i < 20000; i++) {
 			registry.addLock(new BasicLock("Locksmith", null, i, i, i));
 		}
-		registry.removeLock(1, 1, 1);
-		assertTrue(registry.getLock(1, 1, 1) == null);
+		registry.removeLock(6543, 34, 7777);
+		assertTrue(registry.getLock(6543, 34, 7777) == null);
+		assertTrue(registry.getLock(20000, 20000, 20000) == null);
+		assertTrue(registry.getLock(1, 1, 1) != null);
 	}
 }
