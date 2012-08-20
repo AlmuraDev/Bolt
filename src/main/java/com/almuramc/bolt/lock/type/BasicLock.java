@@ -34,9 +34,9 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
- * A basic lock stored at a singular x, y, z
+ * The basic lock stored at a singular x, y, z
  */
-public class PointLock extends Lock {
+public class BasicLock implements Lock {
 	//Core lock attributes
 	private final int x, y, z;
 	private String owner;
@@ -45,7 +45,7 @@ public class PointLock extends Lock {
 	private boolean isHashed = false;
 	private int hashcode = 0;
 
-	public PointLock(String owner, List<String> coowners, int x, int y, int z) {
+	public BasicLock(String owner, List<String> coowners, int x, int y, int z) {
 		this.owner = owner;
 		this.coowners = coowners;
 		this.x = x;
@@ -74,14 +74,29 @@ public class PointLock extends Lock {
 	}
 
 	@Override
+	public int getX() {
+		return x;
+	}
+
+	@Override
+	public int getY() {
+		return y;
+	}
+
+	@Override
+	public int getZ() {
+		return z;
+	}
+
+	@Override
 	public boolean equals(Object obj) {
 		if (obj == null) {
 			return false;
 		}
-		if (!(obj instanceof PointLock)) {
+		if (!(obj instanceof BasicLock)) {
 			return false;
 		}
-		final PointLock other = (PointLock) obj;
+		final BasicLock other = (BasicLock) obj;
 		return new org.apache.commons.lang3.builder.EqualsBuilder()
 				.append(this.owner, other.owner)
 				.append(this.coowners, other.coowners)
@@ -91,10 +106,6 @@ public class PointLock extends Lock {
 				.isEquals();
 	}
 
-	/**
-	 * Generates a unique hashcode for this object, used when comparing.
-	 * @return the hashcode of this object.
-	 */
 	@Override
 	public int hashCode() {
 		if (!isHashed) {
@@ -113,29 +124,5 @@ public class PointLock extends Lock {
 				.append("y", y)
 				.append("z", z)
 				.toString();
-	}
-
-	/**
-	 * Gets the x coordinate of the position of this lock.
-	 * @return The x coordinate of this lock's position
-	 */
-	public int getX() {
-		return x;
-	}
-
-	/**
-	 * Gets the y coordinate of the position of this lock.
-	 * @return The y coordinate of this lock's position
-	 */
-	public int getY() {
-		return y;
-	}
-
-	/**
-	 * Gets the z coordinate of the position of this lock.
-	 * @return The z coordinate of this lock's position
-	 */
-	public int getZ() {
-		return z;
 	}
 }

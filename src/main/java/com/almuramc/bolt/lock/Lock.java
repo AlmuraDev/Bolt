@@ -32,45 +32,48 @@ import java.util.List;
 /**
  * The core lock.
  */
-public abstract class Lock implements Serializable {
+public interface Lock extends Serializable {
 	/**
 	 * Gets the owner of this lock
 	 * @return The name of the owner
 	 */
-	public abstract String getOwner();
+	public String getOwner();
 
 	/**
 	 * Sets the owner of this lock.
 	 * @param owner The name of the new owner of this lock.
 	 */
-	public abstract void setOwner(String owner);
+	public void setOwner(String owner);
 
 	/**
 	 * Gets the Co-Owners of this lock. A null value indicates
 	 * that the lock is available to everyone.
 	 * @return List of names representing co-owners or null for everyone
 	 */
-	public abstract List<String> getCoOwners();
+	public List<String> getCoOwners();
 
 	/**
 	 * Sets the Co-Owners of this lock. A null value indicates
 	 * that the lock will be available to everyone.
 	 * @param coowners List of names representing co-owners
 	 */
-	public abstract void setCoOwners(List<String> coowners);
+	public void setCoOwners(List<String> coowners);
 
 	/**
-	 * Returns whether one object is equal to another.
-	 * @param obj the object that will be compared for equality
-	 * @return True if equals, false if not
+	 * Gets the x coordinate of the position of this lock.
+	 * @return The x coordinate of this lock's position
 	 */
-	@Override
-	public abstract boolean equals(Object obj);
+	public int getX();
 
 	/**
-	 * Returns a string representation of this object.
-	 * @return String object representing detailed information of this object
+	 * Gets the y coordinate of the position of this lock.
+	 * @return The y coordinate of this lock's position
 	 */
-	@Override
-	public abstract String toString();
+	public int getY();
+
+	/**
+	 * Gets the z coordinate of the position of this lock.
+	 * @return The z coordinate of this lock's position
+	 */
+	public int getZ();
 }

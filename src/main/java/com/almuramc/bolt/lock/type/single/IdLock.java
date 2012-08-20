@@ -28,25 +28,29 @@ package com.almuramc.bolt.lock.type.single;
 
 import java.util.List;
 
-import com.almuramc.bolt.lock.type.PointLock;
+import com.almuramc.bolt.lock.type.BasicLock;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
- * The basic id-based Material lock.
+ * The basic id-based lock.
  */
-public class MaterialPointLock extends PointLock {
+public class IdLock extends BasicLock {
 	private int id;
 
-	public MaterialPointLock(String owner, List<String> coowners, int x, int y, int z, int id) {
+	public IdLock(String owner, List<String> coowners, int x, int y, int z, int id) {
 		super(owner, coowners, x, y, z);
 		this.id = id;
 	}
 
-	public MaterialPointLock(String owner, int x, int y, int z, int id) {
+	public IdLock(String owner, int x, int y, int z, int id) {
 		this(owner, null, x, y, z, id);
 	}
 
+	/**
+	 * Gets the id that is used as a characteristic of this lock
+	 * @return the id of the lock
+	 */
 	public int getId() {
 		return id;
 	}
@@ -56,7 +60,7 @@ public class MaterialPointLock extends PointLock {
 		if (!super.equals(obj)) {
 			return false;
 		}
-		final MaterialPointLock other = (MaterialPointLock) obj;
+		final IdLock other = (IdLock) obj;
 		return new org.apache.commons.lang3.builder.EqualsBuilder()
 				.append(this.id, other.id)
 				.isEquals();

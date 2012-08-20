@@ -24,14 +24,13 @@
  * <http://www.gnu.org/licenses/> for the GNU General Public License and
  * the GNU Lesser Public License.
  */
-package com.almuramc.bolt.registry.type.basic;
+package com.almuramc.bolt.registry;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 
 import com.almuramc.bolt.lock.Lock;
-import com.almuramc.bolt.registry.type.LockRegistry;
+import com.almuramc.bolt.util.TInt21TripleObjectHashMap;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -39,62 +38,69 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 /**
  * Simple registry of locks
  */
-public class SimpleLockRegistry extends LockRegistry {
-	private final HashSet<Lock> registry;
+public class CommonRegistry implements Registry {
+	private final TInt21TripleObjectHashMap registry;
+	//Hashcode
+	private boolean isHashed = false;
+	private int hashcode = 0;
 
-	public SimpleLockRegistry() {
-		registry = new HashSet<Lock>();
+	public CommonRegistry() {
+		registry = new TInt21TripleObjectHashMap();
 	}
 
 	@Override
-	public LockRegistry addLock(Lock lock) {
+	public Registry addLock(int x, int y, int z, Lock lock) {
 		if (lock == null) {
 			throw new NullPointerException("Trying to add a null lock to the registry!");
 		}
-		registry.add(lock);
+		registry.put(x, y, z, lock);
 		return this;
 	}
 
 	@Override
-	public LockRegistry addLocks(Collection<Lock> locks) {
-		if (locks == null) {
-			throw new NullPointerException("Trying to add a null collection of locks to the registry!");
-		}
-		registry.addAll(locks);
+	public Registry removeLock(int x, int y, int z) {
+		registry.remove(x, y, z);
 		return this;
 	}
 
 	@Override
-	public LockRegistry removeLock(Lock lock) {
-		if (lock == null) {
-			throw new NullPointerException("Trying to remove a null lock from the registry!");
-		}
-		registry.remove(lock);
-		return this;
-	}
-
-	@Override
-	public LockRegistry removeLocks(Collection<Lock> locks) {
-		if (locks == null) {
-			throw new NullPointerException("Trying to remove a null collection of locks from the registry!");
-		}
-		registry.removeAll(locks);
-		return this;
+	public Lock getLock(int x, int y, int z) {
+		return (Lock) registry.get(x, y, z);
 	}
 
 	@Override
 	public Collection<Lock> getAll() {
-		return Collections.unmodifiableSet(registry);
+		return Collections.unmodifiableCollection(registry.valueCollection());
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (!super.equals(obj)) {
+		if (obj == null) {
 			return false;
 		}
-		if (!(obj instanceof SimpleLockRegistry)) {
-			return false;
+		final CommonRegistry other = (CommonRegistry) obj;
+		return new org.apache.commons.lang3.builder.EqualsBuilder()
+				.append(this.getAll(), other.getAll())
+				.isEquals();
+	}
+
+	/**
+	 * Generates a unique hashcode for this object, used when comparing.
+	 * @return the hashcode of this object.
+	 */
+	@Override
+	public int hashCode() {
+		if (!isHashed) {
+			hashcode = new HashCodeBuilder(7, 11).append(getAll()).hashCode();
+			isHashed = true;
 		}
-		return true;
+		return hashcode;
+	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this)
+				.append(getAll())
+				.toString();
 	}
 }

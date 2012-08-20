@@ -26,20 +26,46 @@
  */
 package com.almuramc.bolt.registry;
 
+import java.util.Collection;
+
+import com.almuramc.bolt.lock.Lock;
+
 /**
- * The core registry
+ * The blueprint for an object representing a registry. Implementations are welcome to provide their
+ * own characteristics,
  */
-public abstract class Registry {
+public interface Registry {
 	/**
-	 * Returns whether one object is equal to another.
-	 * @param obj the object that will be compared for equality
-	 * @return True if equals, false if not
+	 * Adds a lock to the registry.
+	 * @param lock The lock to add
+	 * @return The Registry so it can be chained
+	 * @throws NullPointerException If the lock is null
 	 */
-	public abstract boolean equals(Object obj);
+	public Registry addLock(int x, int y, int z, Lock lock);
 
 	/**
-	 * Returns a string representation of this object.
-	 * @return String object representing detailed information of this object
+	 * Removes a lock from the registry.
+	 * @param x The x coordinate
+	 * @param y The y coordinate
+	 * @param z The z coordinate
+	 * @return The Registry so it can be chained
+	 * @throws NullPointerException If the lock is null
 	 */
-	public abstract String toString();
+	public Registry removeLock(int x, int y, int z);
+
+	/**
+	 * Gets a lock from the registry.
+	 *
+	 * @param x The x coordinate in the world
+	 * @param y The y coordinate in the world
+	 * @param z The z coordinate in the world
+	 * @return The Lock object or null if no lock at this location
+	 */
+	public Lock getLock(int x, int y, int z);
+
+	/**
+	 * Returns the Collection of locks this registry has stored. The Collection can be empty.
+	 * @return The Collection containing the locks
+	 */
+	public Collection<Lock> getAll();
 }
