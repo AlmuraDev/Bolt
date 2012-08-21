@@ -39,13 +39,13 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * Simple registry of locks
  */
 public class CommonRegistry implements Registry {
-	private final TInt21TripleObjectHashMap registry;
+	private final TInt21TripleObjectHashMap<Lock> registry;
 	//Hashcode
 	private boolean isHashed = false;
 	private int hashcode = 0;
 
 	public CommonRegistry() {
-		registry = new TInt21TripleObjectHashMap();
+		registry = new TInt21TripleObjectHashMap<Lock>();
 	}
 
 	@Override
@@ -65,12 +65,33 @@ public class CommonRegistry implements Registry {
 
 	@Override
 	public Lock getLock(int x, int y, int z) {
-		return (Lock) registry.get(x, y, z);
+		return registry.get(x, y, z);
 	}
 
 	@Override
 	public Collection<Lock> getAll() {
 		return Collections.unmodifiableCollection(registry.valueCollection());
+	}
+
+	protected Collection<Lock> getRawAll() {
+		return registry.valueCollection();
+	}
+
+	@Override
+	public boolean contains(Lock lock) {
+		if (registry.containsValue(lock)) {
+			return true;
+		}
+
+		return false;
+	}
+
+	@Override
+	public boolean contains(int x, int y, int z) {
+		if (registry.containsKey(x, y, z)) {
+			return true;
+		}
+		return false;
 	}
 
 	@Override
@@ -83,7 +104,7 @@ public class CommonRegistry implements Registry {
 		}
 		final CommonRegistry other = (CommonRegistry) obj;
 		return new org.apache.commons.lang3.builder.EqualsBuilder()
-				.append(this.getAll(), other.getAll())
+				.append(this.getRawAll(), other.getRawAll())
 				.isEquals();
 	}
 
@@ -103,7 +124,7 @@ public class CommonRegistry implements Registry {
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this)
-				.append(getAll())
+				.append(getRawAll().toString())
 				.toString();
 	}
 }

@@ -55,7 +55,6 @@ public interface Registry {
 
 	/**
 	 * Gets a lock from the registry.
-	 *
 	 * @param x The x coordinate in the world
 	 * @param y The y coordinate in the world
 	 * @param z The z coordinate in the world
@@ -68,4 +67,21 @@ public interface Registry {
 	 * @return The Collection containing the locks
 	 */
 	public Collection<Lock> getAll();
+
+	/**
+	 * Returns if the registry contains the lock specified.
+	 * @param lock The lock to determine if the registry contains
+	 * @return true if contained, false if not
+	 */
+	public boolean contains(Lock lock);
+
+	/**
+	 * Returns if the registry contains a lock at x, y, z.
+	 * @param x the x coordinate
+	 * @param y the y coordinate
+	 * @param z the z coordinate
+	 * @return true if contained, false if not
+	 */
+	public boolean contains(int x, int y, int z);
 }
+
