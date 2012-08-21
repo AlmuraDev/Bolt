@@ -26,11 +26,8 @@
  */
 package com.almuramc.bolt.registry;
 
-import java.util.HashSet;
-
-import com.almuramc.bolt.lock.Lock;
 import com.almuramc.bolt.lock.type.BasicLock;
-import com.almuramc.bolt.lock.type.single.IdLock;
+import com.almuramc.bolt.lock.type.IdLock;
 
 import org.junit.Before;
 import org.junit.Test;

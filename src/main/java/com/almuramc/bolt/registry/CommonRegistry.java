@@ -78,6 +78,9 @@ public class CommonRegistry implements Registry {
 		if (obj == null) {
 			return false;
 		}
+		if (!(obj instanceof CommonRegistry)) {
+			return false;
+		}
 		final CommonRegistry other = (CommonRegistry) obj;
 		return new org.apache.commons.lang3.builder.EqualsBuilder()
 				.append(this.getAll(), other.getAll())

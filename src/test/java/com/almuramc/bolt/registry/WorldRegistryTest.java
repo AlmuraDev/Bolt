@@ -24,53 +24,32 @@
  * <http://www.gnu.org/licenses/> for the GNU General Public License and
  * the GNU Lesser Public License.
  */
-package com.almuramc.bolt.lock.type.single;
+package com.almuramc.bolt.registry;
 
-import java.util.List;
+import java.util.UUID;
 
-import com.almuramc.bolt.lock.type.BasicLock;
+import org.junit.Test;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.core.IsNot.not;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
 
-/**
- * The basic id-based lock.
- */
-public class IdLock extends BasicLock {
-	private int id;
+public class WorldRegistryTest {
+	UUID a = UUID.randomUUID();
+	UUID b = UUID.randomUUID();
+	CommonRegistry c = new CommonRegistry();
 
-	public IdLock(String owner, List<String> coowners, int x, int y, int z, int id) {
-		super(owner, coowners, x, y, z);
-		this.id = id;
+	@Test
+	public void testWorldRegistryAdd() {
+		WorldRegistry.addWorld(a, c);
+		WorldRegistry.addWorld(b, c);
+		assertThat(WorldRegistry.getRegistry(a), equalTo(WorldRegistry.getRegistry(b)));
 	}
 
-	public IdLock(String owner, int x, int y, int z, int id) {
-		this(owner, null, x, y, z, id);
-	}
-
-	/**
-	 * Gets the id that is used as a characteristic of this lock
-	 * @return the id of the lock
-	 */
-	public int getId() {
-		return id;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (!super.equals(obj)) {
-			return false;
-		}
-		final IdLock other = (IdLock) obj;
-		return new org.apache.commons.lang3.builder.EqualsBuilder()
-				.append(this.id, other.id)
-				.isEquals();
-	}
-
-	@Override
-	public String toString() {
-		return new ToStringBuilder(this)
-				.append(super.toString())
-				.append("id", id)
-				.toString();
+	@Test
+	public void testWorldRegistryRemove() {
+		WorldRegistry.removeWorld(b);
+		assertNull(WorldRegistry.getRegistry(b));
 	}
 }

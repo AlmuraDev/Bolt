@@ -24,7 +24,7 @@
  * <http://www.gnu.org/licenses/> for the GNU General Public License and
  * the GNU Lesser Public License.
  */
-package com.almuramc.bolt.registry.world;
+package com.almuramc.bolt.registry;
 
 import java.util.HashMap;
 import java.util.UUID;

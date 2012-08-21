@@ -24,30 +24,54 @@
  * <http://www.gnu.org/licenses/> for the GNU General Public License and
  * the GNU Lesser Public License.
  */
-package com.almuramc.bolt.lock;
+package com.almuramc.bolt.lock.type;
 
-import com.almuramc.bolt.lock.type.BasicLock;
-import com.almuramc.bolt.lock.type.IdLock;
+import java.util.List;
 
-import org.junit.Test;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotSame;
+/**
+ * The basic id-based lock.
+ */
+public class IdLock extends BasicLock {
+	private int id;
 
-public class LockTest {
-	@Test
-	public void lockEqualsTest() {
-		BasicLock a = new BasicLock("Locksmith", null, 1, 1, 1);
-		BasicLock b = new BasicLock("Locksmith", null, 1, 1, 1);
-		assertEquals(a, b);
-		BasicLock c = new BasicLock("Spouty", null, 1, 1, 1);
-		assertFalse(b.equals(c));
+	public IdLock(String owner, List<String> coowners, int x, int y, int z, int id) {
+		super(owner, coowners, x, y, z);
+		this.id = id;
+	}
 
-		IdLock d = new IdLock("Locksmith", null, 1, 1, 1, 1);
-		IdLock e = new IdLock("Locksmith", null, 1, 1, 1, 1);
-		assertEquals(d, e);
-		IdLock f = new IdLock("Spouty", null, 1, 1, 1, 1);
-		assertFalse(e.equals(f));
+	public IdLock(String owner, int x, int y, int z, int id) {
+		this(owner, null, x, y, z, id);
+	}
+
+	/**
+	 * Gets the id that is used as a characteristic of this lock
+	 * @return the id of the lock
+	 */
+	public int getId() {
+		return id;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (!super.equals(obj)) {
+			return false;
+		}
+		if (!(obj instanceof IdLock)) {
+			return false;
+		}
+		final IdLock other = (IdLock) obj;
+		return new org.apache.commons.lang3.builder.EqualsBuilder()
+				.append(this.id, other.id)
+				.isEquals();
+	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this)
+				.append(super.toString())
+				.append("id", id)
+				.toString();
 	}
 }
