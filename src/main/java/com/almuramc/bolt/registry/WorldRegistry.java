@@ -29,8 +29,6 @@ package com.almuramc.bolt.registry;
 import java.util.HashMap;
 import java.util.UUID;
 
-import com.almuramc.bolt.registry.CommonRegistry;
-
 /**
  * Maps CommonRegistries per world.
  */
@@ -38,7 +36,7 @@ public class WorldRegistry {
 	private static final HashMap<UUID, CommonRegistry> registries;
 
 	static {
-	   registries = new HashMap<UUID, CommonRegistry>();
+		registries = new HashMap<UUID, CommonRegistry>();
 	}
 
 	/**
@@ -62,7 +60,6 @@ public class WorldRegistry {
 	}
 
 	/**
-	 *
 	 * @param worldIdentifier
 	 */
 	public static void removeWorld(UUID worldIdentifier) {
@@ -79,7 +76,6 @@ public class WorldRegistry {
 	}
 
 	/**
-	 *
 	 * @param worldIdentifier
 	 * @return
 	 */
