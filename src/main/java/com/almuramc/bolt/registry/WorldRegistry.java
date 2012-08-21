@@ -61,6 +61,10 @@ public class WorldRegistry {
 		registries.put(worldIdentifier, registry);
 	}
 
+	/**
+	 *
+	 * @param worldIdentifier
+	 */
 	public static void removeWorld(UUID worldIdentifier) {
 		registries.remove(worldIdentifier);
 	}
@@ -72,5 +76,18 @@ public class WorldRegistry {
 	 */
 	public static CommonRegistry getRegistry(UUID worldIdentifier) {
 		return registries.get(worldIdentifier);
+	}
+
+	/**
+	 *
+	 * @param worldIdentifier
+	 * @return
+	 */
+	public static boolean contains(UUID worldIdentifier) {
+		if (registries.containsKey(worldIdentifier)) {
+			return true;
+		}
+
+		return false;
 	}
 }
