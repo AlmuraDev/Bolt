@@ -77,7 +77,7 @@ public class CommonRegistry implements Registry {
 	@Override
 	public Registry removeLock(Lock lock) {
 		if (lock == null) {
-			throw new NullPointerException("Trying to remove a null lock to the registry!");
+			throw new NullPointerException("Trying to remove a null lock from the registry!");
 		}
 		return removeLock(lock.getWorld(), lock.getX(), lock.getY(), lock.getZ());
 	}
