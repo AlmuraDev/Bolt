@@ -45,7 +45,7 @@ public interface Storage {
 	 * @return The storage backend so it can be chained
 	 * @throws NullPointerException If the lock is null
 	 */
-	public Storage add(Lock lock);
+	public Storage addLock(Lock lock);
 
 	/**
 	 * Removes a lock from the storage backend.
@@ -53,7 +53,7 @@ public interface Storage {
 	 * @return The storage backend so it can be chained
 	 * @throws NullPointerException If the lock is null
 	 */
-	public Storage remove(Lock lock);
+	public Storage removeLock(Lock lock);
 
 	/**
 	 * Grabs all the locks within the storage backend.

@@ -31,23 +31,24 @@ import java.util.Collection;
 import com.almuramc.bolt.lock.Lock;
 
 public class SqlStorage implements Storage {
+
 	@Override
 	public void initialize() {
 
 	}
 
 	@Override
-	public Storage add(Lock lock) {
-		return this;
+	public Storage addLock(Lock lock) {
+
 	}
 
 	@Override
-	public Storage remove(Lock lock) {
-		return this;
+	public Storage removeLock(Lock lock) {
+
 	}
 
 	@Override
 	public Collection<Lock> getAll() {
-		return null;
+
 	}
 }

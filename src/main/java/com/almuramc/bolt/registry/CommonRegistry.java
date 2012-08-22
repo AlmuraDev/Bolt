@@ -68,11 +68,18 @@ public class CommonRegistry implements Registry {
 		if (worldIdentifier == null) {
 			throw new NullPointerException("World identifier passed in is null!");
 		}
-		if (!registry.containsKey(worldIdentifier)) {
-			return this;
+		if (registry.containsKey(worldIdentifier)) {
+			registry.get(worldIdentifier).remove(x, y, z);
 		}
-		registry.get(worldIdentifier).remove(x, y, z);
 		return this;
+	}
+
+	@Override
+	public Registry removeLock(Lock lock) {
+		if (lock == null) {
+			throw new NullPointerException("Trying to remove a null lock to the registry!");
+		}
+		return removeLock(lock.getWorld(), lock.getX(), lock.getY(), lock.getZ());
 	}
 
 	@Override
@@ -80,10 +87,7 @@ public class CommonRegistry implements Registry {
 		if (worldIdentifier == null) {
 			throw new NullPointerException("World identifier passed in is null!");
 		}
-		if (!registry.containsKey(worldIdentifier)) {
-			return null;
-		}
-		return registry.get(worldIdentifier).get(x, y, z);
+		return registry.get(worldIdentifier) != null ? registry.get(worldIdentifier).get(x, y, z) : null;
 	}
 
 	@Override

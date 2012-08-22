@@ -56,6 +56,14 @@ public interface Registry {
 	public Registry removeLock(UUID worldIdentifier, int x, int y, int z);
 
 	/**
+	 * Removes a lock from the registry
+	 * @param lock The lock to remove
+	 * @return The registry so it can be chained
+	 * @throws NullPointerException If the lock is null
+	 */
+	public Registry removeLock(Lock lock);
+
+	/**
 	 * Gets a lock from the registry.
 	 * @param worldIdentifier The uuid identifier of the world
 	 * @param x The x coordinate in the world
