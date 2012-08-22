@@ -61,7 +61,6 @@ public class SqlStorage implements Storage {
 		this.port = port;
 	}
 
-
 	@Override
 	public void initialize() {
 		if (config instanceof SQLiteConfiguration) {

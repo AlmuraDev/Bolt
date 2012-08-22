@@ -35,22 +35,26 @@ import com.almuramc.bolt.storage.sql.RegistryTable;
 import com.alta189.simplesave.DatabaseFactory;
 import com.alta189.simplesave.exceptions.ConnectionException;
 import com.alta189.simplesave.exceptions.TableRegistrationException;
+import com.alta189.simplesave.h2.H2Configuration;
+import com.alta189.simplesave.h2.H2Database;
 import com.alta189.simplesave.sqlite.SQLiteConfiguration;
 import com.alta189.simplesave.sqlite.SQLiteDatabase;
 
 import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNotSame;
 import static junit.framework.Assert.fail;
 
 public class SqlStorageTest {
-	@Test
-	public void test() {
+	//@Test
+	public void testSqlite() {
 		SQLiteConfiguration config = new SQLiteConfiguration();
 		File tmpfile = null;
 		try {
-			tmpfile = File.createTempFile("h2test_", ".db");
+			tmpfile = File.createTempFile("sqlite_test_", ".db");
 		} catch (IOException e) {
 			e.printStackTrace();
 			fail("IOException occured: " + e.toString());
@@ -74,6 +78,46 @@ public class SqlStorageTest {
 		one.setLock(new BasicLock("Charlie", null, UUID.randomUUID(), 1, 1, 1));
 		db.save(RegistryTable.class, one);
 		assertEquals(db.select(RegistryTable.class).execute().find().size(), 1);
+		try {
+			db.close();
+		} catch (ConnectionException e) {
+			fail("Failed to close database! " + e.toString());
+		}
+		tmpfile.delete();
+	}
+
+	@Test
+	public void testH2() {
+		final BasicLock test = new BasicLock("Charlie", null, UUID.randomUUID(), 1, 1, 1);
+		final BasicLock test2 = new BasicLock("Charlie", null, UUID.randomUUID(), 1, 1, 1);
+		H2Configuration h2 = new H2Configuration();
+		File tmpfile = null;
+		try {
+			tmpfile = File.createTempFile("h2_test_", ".db");
+		} catch (IOException e) {
+			e.printStackTrace();
+			fail("IOException occurred: " + e.toString());
+		}
+		assertNotNull(tmpfile);
+		h2.setDatabase(tmpfile.getAbsolutePath().substring(0, tmpfile.getAbsolutePath().indexOf(".db")));
+		tmpfile.deleteOnExit();
+		H2Database db = (H2Database) DatabaseFactory.createNewDatabase(h2);
+		try {
+			db.registerTable(RegistryTable.class);
+		} catch (TableRegistrationException e) {
+			e.printStackTrace();
+			fail("Exception occurred too early! " + e.toString());
+		}
+		try {
+			db.connect();
+		} catch (ConnectionException e) {
+			fail("Failed to connect to database! " + e.toString());
+		}
+		db.save(new RegistryTable(test));
+		db.save(new RegistryTable(test2));
+		assertEquals(db.select(RegistryTable.class).execute().find().size(), 2);
+		assertEquals(db.select(RegistryTable.class).where().equal("lock", test).execute().findOne().getLock(), test);
+		assertEquals(db.select(RegistryTable.class).where().equal("lock", test2).execute().findOne().getLock(), test2);
 		try {
 			db.close();
 		} catch (ConnectionException e) {
