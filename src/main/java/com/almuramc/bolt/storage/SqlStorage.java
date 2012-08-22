@@ -116,8 +116,8 @@ public class SqlStorage implements Storage {
 	@Override
 	public Collection<Lock> getAll() {
 		ArrayList<Lock> locks = new ArrayList<Lock>();
-		for (Lock lock : db.select(Lock.class).execute().find()) {
-			locks.add(lock);
+		for (RegistryTable table : db.select(RegistryTable.class).execute().find()) {
+			locks.add(table.lock);
 		}
 		return Collections.unmodifiableCollection(locks);
 	}
