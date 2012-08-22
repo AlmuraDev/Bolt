@@ -26,6 +26,8 @@
  */
 package com.almuramc.bolt.lock;
 
+import java.util.UUID;
+
 import com.almuramc.bolt.lock.type.BasicLock;
 import com.almuramc.bolt.lock.type.IdLock;
 
@@ -37,16 +39,17 @@ import static org.junit.Assert.assertFalse;
 public class LockTest {
 	@Test
 	public void lockEqualsTest() {
-		BasicLock a = new BasicLock("Locksmith", null, 1, 1, 1);
-		BasicLock b = new BasicLock("Locksmith", null, 1, 1, 1);
+		UUID testWorld = UUID.randomUUID();
+		BasicLock a = new BasicLock("Locksmith", null, testWorld, 1, 1, 1);
+		BasicLock b = new BasicLock("Locksmith", null, testWorld, 1, 1, 1);
 		assertEquals(a, b);
-		BasicLock c = new BasicLock("Spouty", null, 1, 1, 1);
+		BasicLock c = new BasicLock("Spouty", null, testWorld, 1, 1, 1);
 		assertFalse(b.equals(c));
 
-		IdLock d = new IdLock("Locksmith", null, 1, 1, 1, 1);
-		IdLock e = new IdLock("Locksmith", null, 1, 1, 1, 1);
+		IdLock d = new IdLock("Locksmith", null, testWorld, 1, 1, 1, 1);
+		IdLock e = new IdLock("Locksmith", null, testWorld, 1, 1, 1, 1);
 		assertEquals(d, e);
-		IdLock f = new IdLock("Spouty", null, 1, 1, 1, 1);
+		IdLock f = new IdLock("Spouty", null, testWorld, 1, 1, 1, 1);
 		assertFalse(e.equals(f));
 	}
 }

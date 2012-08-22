@@ -27,6 +27,7 @@
 package com.almuramc.bolt.lock.type;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.almuramc.bolt.lock.Lock;
 
@@ -38,6 +39,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  */
 public class BasicLock implements Lock {
 	//Core lock attributes
+	private final UUID worldIdentifier;
 	private final int x, y, z;
 	private String owner;
 	private List<String> coowners;
@@ -45,9 +47,10 @@ public class BasicLock implements Lock {
 	private boolean isHashed = false;
 	private int hashcode = 0;
 
-	public BasicLock(String owner, List<String> coowners, int x, int y, int z) {
+	public BasicLock(String owner, List<String> coowners, UUID worldIdentifier, int x, int y, int z) {
 		this.owner = owner;
 		this.coowners = coowners;
+		this.worldIdentifier = worldIdentifier;
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -71,6 +74,11 @@ public class BasicLock implements Lock {
 	@Override
 	public void setCoOwners(List<String> coowners) {
 		this.coowners = coowners;
+	}
+
+	@Override
+	public UUID getWorld() {
+		return worldIdentifier;
 	}
 
 	@Override
@@ -100,6 +108,7 @@ public class BasicLock implements Lock {
 		return new org.apache.commons.lang3.builder.EqualsBuilder()
 				.append(this.owner, other.owner)
 				.append(this.coowners, other.coowners)
+				.append(this.worldIdentifier, other.worldIdentifier)
 				.append(this.x, other.x)
 				.append(this.y, other.y)
 				.append(this.z, other.z)
@@ -120,6 +129,7 @@ public class BasicLock implements Lock {
 		return new ToStringBuilder(this)
 				.append("owner", owner)
 				.append("coowners", coowners)
+				.append("worlduuid", worldIdentifier)
 				.append("x", x)
 				.append("y", y)
 				.append("z", z)

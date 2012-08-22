@@ -26,6 +26,8 @@
  */
 package com.almuramc.bolt.registry;
 
+import java.util.UUID;
+
 import com.almuramc.bolt.lock.type.BasicLock;
 import com.almuramc.bolt.lock.type.IdLock;
 
@@ -37,31 +39,33 @@ import static org.junit.Assert.assertTrue;
 
 public class RegistryTest {
 	private CommonRegistry registry;
+	private UUID worldTest;
 
 	@Before
 	public void initialize() {
 		registry = new CommonRegistry();
+		worldTest = UUID.randomUUID();
 	}
 
 	@Test
 	public void testRegistryAdd() {
-		IdLock a = new IdLock("LockSmith", null, 1, 1, 1, 129);
-		IdLock b = new IdLock("LockSmith", null, 1, 2, 1, 129);
+		IdLock a = new IdLock("LockSmith", null, worldTest, 1, 1, 1, 129);
+		IdLock b = new IdLock("LockSmith", null, worldTest, 1, 2, 1, 129);
 		registry.addLock(a);
 		registry.addLock(b);
-		assertTrue(registry.getLock(1, 1, 1).equals(a));
-		assertTrue(registry.getLock(1, 2, 1).equals(b));
-		assertNull(registry.getLock(1, 3, 1));
+		assertTrue(registry.getLock(worldTest, 1, 1, 1).equals(a));
+		assertTrue(registry.getLock(worldTest, 1, 2, 1).equals(b));
+		assertNull(registry.getLock(worldTest, 1, 3, 1));
 	}
 
 	@Test
 	public void testRegistrySubtract() {
 		for (int i = 0; i < 20000; i++) {
-			registry.addLock(new BasicLock("Locksmith", null, i, i, i));
+			registry.addLock(new BasicLock("Locksmith", null, worldTest, i, i, i));
 		}
-		registry.removeLock(6543, 34, 7777);
-		assertTrue(registry.getLock(6543, 34, 7777) == null);
-		assertTrue(registry.getLock(20000, 20000, 20000) == null);
-		assertTrue(registry.getLock(1, 1, 1) != null);
+		registry.removeLock(worldTest, 6543, 34, 7777);
+		assertTrue(registry.getLock(worldTest, 6543, 34, 7777) == null);
+		assertTrue(registry.getLock(worldTest, 20000, 20000, 20000) == null);
+		assertTrue(registry.getLock(worldTest, 1, 1, 1) != null);
 	}
 }

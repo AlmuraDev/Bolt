@@ -27,6 +27,7 @@
 package com.almuramc.bolt.registry;
 
 import java.util.Collection;
+import java.util.UUID;
 
 import com.almuramc.bolt.lock.Lock;
 
@@ -38,50 +39,53 @@ public interface Registry {
 	/**
 	 * Adds a lock to the registry.
 	 * @param lock The lock to add
-	 * @return The Registry so it can be chained
+	 * @return The registry so it can be chained
 	 * @throws NullPointerException If the lock is null
 	 */
 	public Registry addLock(Lock lock);
 
 	/**
 	 * Removes a lock from the registry.
+	 * @param worldIdentifier The uuid identifier of the world
 	 * @param x The x coordinate
 	 * @param y The y coordinate
 	 * @param z The z coordinate
-	 * @return The Registry so it can be chained
-	 * @throws NullPointerException If the lock is null
+	 * @return The registry so it can be chained
+	 * @throws NullPointerException If the world identifier is null
 	 */
-	public Registry removeLock(int x, int y, int z);
+	public Registry removeLock(UUID worldIdentifier, int x, int y, int z);
 
 	/**
 	 * Gets a lock from the registry.
+	 * @param worldIdentifier The uuid identifier of the world
 	 * @param x The x coordinate in the world
 	 * @param y The y coordinate in the world
 	 * @param z The z coordinate in the world
-	 * @return The Lock object or null if no lock at this location
+	 * @return The lock object or null if no lock at this location
 	 */
-	public Lock getLock(int x, int y, int z);
+	public Lock getLock(UUID worldIdentifier, int x, int y, int z);
 
 	/**
 	 * Returns the Collection of locks this registry has stored. The Collection can be empty.
-	 * @return The Collection containing the locks
+	 * @return The collection containing the locks
 	 */
 	public Collection<Lock> getAll();
 
 	/**
 	 * Returns if the registry contains the lock specified.
 	 * @param lock The lock to determine if the registry contains
-	 * @return true if contained, false if not
+	 * @return True if contained, false if not
 	 */
 	public boolean contains(Lock lock);
 
 	/**
 	 * Returns if the registry contains a lock at x, y, z.
-	 * @param x the x coordinate
-	 * @param y the y coordinate
-	 * @param z the z coordinate
-	 * @return true if contained, false if not
+	 * @param worldIdentifier The uuid identifier of the world
+	 * @param x The x coordinate
+	 * @param y The y coordinate
+	 * @param z The z coordinate
+	 * @return True if contained, false if not
 	 */
-	public boolean contains(int x, int y, int z);
+	public boolean contains(UUID worldIdentifier, int x, int y, int z);
 }
 

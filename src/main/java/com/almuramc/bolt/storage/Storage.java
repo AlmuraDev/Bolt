@@ -26,5 +26,38 @@
  */
 package com.almuramc.bolt.storage;
 
-public abstract class Storage {
+import java.util.Collection;
+
+import com.almuramc.bolt.lock.Lock;
+
+/**
+ * Blueprint for a storage backend to persist locks.
+ */
+public interface Storage {
+	/**
+	 * Initializes the storage backend.
+	 */
+	public void initialize();
+
+	/**
+	 * Adds a lock to the storage backend.
+	 * @param lock The lock to add
+	 * @return The storage backend so it can be chained
+	 * @throws NullPointerException If the lock is null
+	 */
+	public Storage add(Lock lock);
+
+	/**
+	 * Removes a lock from the storage backend.
+	 * @param lock The lock to remove
+	 * @return The storage backend so it can be chained
+	 * @throws NullPointerException If the lock is null
+	 */
+	public Storage remove(Lock lock);
+
+	/**
+	 * Grabs all the locks within the storage backend.
+	 * @return The collection of locks in the storage backend
+	 */
+	public Collection<Lock> getAll();
 }

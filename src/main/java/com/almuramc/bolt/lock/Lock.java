@@ -28,6 +28,7 @@ package com.almuramc.bolt.lock;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * The core lock.
@@ -53,11 +54,16 @@ public interface Lock extends Serializable {
 	public List<String> getCoOwners();
 
 	/**
-	 * Sets the Co-Owners of this lock. A null value indicates
-	 * that the lock will be available to everyone.
+	 * Sets the co-owners of this lock.
 	 * @param coowners List of names representing co-owners
 	 */
 	public void setCoOwners(List<String> coowners);
+
+	/**
+	 * Gets the world uuid of this lock.
+	 * @return The uuid of the lock
+	 */
+	public UUID getWorld();
 
 	/**
 	 * Gets the x coordinate of the position of this lock.

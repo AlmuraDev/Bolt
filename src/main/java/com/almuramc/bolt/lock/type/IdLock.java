@@ -27,6 +27,7 @@
 package com.almuramc.bolt.lock.type;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -36,13 +37,13 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 public class IdLock extends BasicLock {
 	private int id;
 
-	public IdLock(String owner, List<String> coowners, int x, int y, int z, int id) {
-		super(owner, coowners, x, y, z);
+	public IdLock(String owner, List<String> coowners, UUID worldIdentifier, int x, int y, int z, int id) {
+		super(owner, coowners, worldIdentifier, x, y, z);
 		this.id = id;
 	}
 
-	public IdLock(String owner, int x, int y, int z, int id) {
-		this(owner, null, x, y, z, id);
+	public IdLock(String owner, UUID worldIdentifier, int x, int y, int z, int id) {
+		this(owner, null, worldIdentifier, x, y, z, id);
 	}
 
 	/**

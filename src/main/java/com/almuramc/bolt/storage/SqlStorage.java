@@ -24,9 +24,30 @@
  * <http://www.gnu.org/licenses/> for the GNU General Public License and
  * the GNU Lesser Public License.
  */
-package com.almuramc.bolt.storage.type;
+package com.almuramc.bolt.storage;
 
-import com.almuramc.bolt.storage.Storage;
+import java.util.Collection;
 
-public class SQLStorage extends Storage {
+import com.almuramc.bolt.lock.Lock;
+
+public class SqlStorage implements Storage {
+	@Override
+	public void initialize() {
+
+	}
+
+	@Override
+	public Storage add(Lock lock) {
+		return this;
+	}
+
+	@Override
+	public Storage remove(Lock lock) {
+		return this;
+	}
+
+	@Override
+	public Collection<Lock> getAll() {
+		return null;
+	}
 }

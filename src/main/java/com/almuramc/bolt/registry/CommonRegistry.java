@@ -26,8 +26,11 @@
  */
 package com.almuramc.bolt.registry;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.UUID;
 
 import com.almuramc.bolt.lock.Lock;
 import com.almuramc.bolt.util.TInt21TripleObjectHashMap;
@@ -36,16 +39,16 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
- * Simple registry of locks
+ * Simple registry of locks per world.
  */
 public class CommonRegistry implements Registry {
-	private final TInt21TripleObjectHashMap<Lock> registry;
+	private final HashMap<UUID, TInt21TripleObjectHashMap<Lock>> registry;
 	//Hashcode
 	private boolean isHashed = false;
 	private int hashcode = 0;
 
 	public CommonRegistry() {
-		registry = new TInt21TripleObjectHashMap<Lock>();
+		registry = new HashMap<UUID, TInt21TripleObjectHashMap<Lock>>();
 	}
 
 	@Override
@@ -53,45 +56,67 @@ public class CommonRegistry implements Registry {
 		if (lock == null) {
 			throw new NullPointerException("Trying to add a null lock to the registry!");
 		}
-		registry.put(lock.getX(), lock.getY(), lock.getZ(), lock);
+		if (!registry.containsKey(lock.getWorld())) {
+			registry.put(lock.getWorld(), new TInt21TripleObjectHashMap<Lock>());
+		}
+		registry.get(lock.getWorld()).put(lock.getX(), lock.getY(), lock.getZ(), lock);
 		return this;
 	}
 
 	@Override
-	public Registry removeLock(int x, int y, int z) {
-		registry.remove(x, y, z);
+	public Registry removeLock(UUID worldIdentifier, int x, int y, int z) {
+		if (worldIdentifier == null) {
+			throw new NullPointerException("World identifier passed in is null!");
+		}
+		if (!registry.containsKey(worldIdentifier)) {
+			return this;
+		}
+		registry.get(worldIdentifier).remove(x, y, z);
 		return this;
 	}
 
 	@Override
-	public Lock getLock(int x, int y, int z) {
-		return registry.get(x, y, z);
+	public Lock getLock(UUID worldIdentifier, int x, int y, int z) {
+		if (worldIdentifier == null) {
+			throw new NullPointerException("World identifier passed in is null!");
+		}
+		if (!registry.containsKey(worldIdentifier)) {
+			return null;
+		}
+		return registry.get(worldIdentifier).get(x, y, z);
 	}
 
 	@Override
 	public Collection<Lock> getAll() {
-		return Collections.unmodifiableCollection(registry.valueCollection());
+		ArrayList<Lock> locks = new ArrayList<Lock>();
+		for (TInt21TripleObjectHashMap value : registry.values()) {
+			locks.addAll(value.valueCollection());
+		}
+		return Collections.unmodifiableCollection(locks);
 	}
 
 	protected Collection<Lock> getRawAll() {
-		return registry.valueCollection();
+		ArrayList<Lock> locks = new ArrayList<Lock>();
+		for (TInt21TripleObjectHashMap value : registry.values()) {
+			locks.addAll(value.valueCollection());
+		}
+		return locks;
 	}
 
 	@Override
 	public boolean contains(Lock lock) {
-		if (registry.containsValue(lock)) {
-			return true;
+		if (lock == null) {
+			throw new NullPointerException("Lock passed in is null!");
 		}
-
-		return false;
+		return registry.containsKey(lock.getWorld()) && registry.get(lock.getWorld()).containsValue(lock);
 	}
 
 	@Override
-	public boolean contains(int x, int y, int z) {
-		if (registry.containsKey(x, y, z)) {
-			return true;
+	public boolean contains(UUID worldIdentifier, int x, int y, int z) {
+		if (worldIdentifier == null) {
+			throw new NullPointerException("World identifier passed in is null!");
 		}
-		return false;
+		return registry.containsKey(worldIdentifier) && registry.get(worldIdentifier).containsKey(x, y, z);
 	}
 
 	@Override
@@ -110,12 +135,12 @@ public class CommonRegistry implements Registry {
 
 	/**
 	 * Generates a unique hashcode for this object, used when comparing.
-	 * @return the hashcode of this object.
+	 * @return The hashcode of this object.
 	 */
 	@Override
 	public int hashCode() {
 		if (!isHashed) {
-			hashcode = new HashCodeBuilder(7, 11).append(getAll()).hashCode();
+			hashcode = new HashCodeBuilder(7, 11).append(getRawAll()).hashCode();
 			isHashed = true;
 		}
 		return hashcode;

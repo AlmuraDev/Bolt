@@ -24,31 +24,17 @@
  * <http://www.gnu.org/licenses/> for the GNU General Public License and
  * the GNU Lesser Public License.
  */
-package com.almuramc.bolt.registry;
+package com.almuramc.bolt.storage.sql;
 
-import java.util.UUID;
+import com.almuramc.bolt.lock.Lock;
+import com.alta189.simplesave.Field;
+import com.alta189.simplesave.Id;
+import com.alta189.simplesave.Table;
 
-import org.junit.Test;
-
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
-
-public class WorldRegistryTest {
-	UUID a = UUID.randomUUID();
-	UUID b = UUID.randomUUID();
-	CommonRegistry c = new CommonRegistry();
-
-	@Test
-	public void testWorldRegistryAdd() {
-		WorldRegistry.addWorld(a, c);
-		WorldRegistry.addWorld(b, c);
-		assertThat(WorldRegistry.getRegistry(a), equalTo(WorldRegistry.getRegistry(b)));
-	}
-
-	@Test
-	public void testWorldRegistryRemove() {
-		WorldRegistry.removeWorld(b);
-		assertNull(WorldRegistry.getRegistry(b));
-	}
+@Table("bolt_registry")
+public class RegistryTable {
+	@Id
+	public int id;
+	@Field
+	public Lock lock;
 }
