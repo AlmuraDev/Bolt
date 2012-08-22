@@ -38,11 +38,13 @@ import com.alta189.simplesave.DatabaseFactory;
 import com.alta189.simplesave.exceptions.ConnectionException;
 import com.alta189.simplesave.exceptions.TableRegistrationException;
 import com.alta189.simplesave.h2.H2Configuration;
+import com.alta189.simplesave.h2.H2Database;
 import com.alta189.simplesave.mysql.MySQLConfiguration;
 import com.alta189.simplesave.query.Query;
 import com.alta189.simplesave.query.QueryType;
 import com.alta189.simplesave.sqlite.SQLiteConfiguration;
 import com.alta189.simplesave.sqlite.SQLiteConstants;
+import com.alta189.simplesave.sqlite.SQLiteDatabase;
 
 public class SqlStorage implements Storage {
 	private Database db;
@@ -63,9 +65,11 @@ public class SqlStorage implements Storage {
 	@Override
 	public void initialize() {
 		if (config instanceof SQLiteConfiguration) {
-
+			SQLiteConfiguration sqlite = (SQLiteConfiguration) config;
+			db = DatabaseFactory.createNewDatabase(sqlite);
 		} else if (config instanceof H2Configuration) {
-
+			H2Configuration h2 = (H2Configuration) config;
+			db = DatabaseFactory.createNewDatabase(h2);
 		} else {
 			MySQLConfiguration mysql = (MySQLConfiguration) config;
 			mysql
@@ -74,8 +78,8 @@ public class SqlStorage implements Storage {
 					.setUser(username)
 					.setPassword(password)
 					.setPort(port);
+			db = DatabaseFactory.createNewDatabase(config);
 		}
-		db = DatabaseFactory.createNewDatabase(config);
 
 		try {
 			db.registerTable(RegistryTable.class);
