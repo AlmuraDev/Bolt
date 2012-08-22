@@ -31,7 +31,6 @@ import java.util.Collection;
 import com.almuramc.bolt.lock.Lock;
 
 public class SqlStorage implements Storage {
-
 	@Override
 	public void initialize() {
 
@@ -39,16 +38,16 @@ public class SqlStorage implements Storage {
 
 	@Override
 	public Storage addLock(Lock lock) {
-
+		return this;
 	}
 
 	@Override
 	public Storage removeLock(Lock lock) {
-
+		return this;
 	}
 
 	@Override
 	public Collection<Lock> getAll() {
-
+		return null;
 	}
 }
