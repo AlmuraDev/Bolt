@@ -26,28 +26,99 @@
  */
 package com.almuramc.bolt.storage;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 import com.almuramc.bolt.lock.Lock;
+import com.almuramc.bolt.storage.sql.RegistryTable;
+import com.alta189.simplesave.Configuration;
+import com.alta189.simplesave.Database;
+import com.alta189.simplesave.DatabaseFactory;
+import com.alta189.simplesave.exceptions.ConnectionException;
+import com.alta189.simplesave.exceptions.TableRegistrationException;
+import com.alta189.simplesave.h2.H2Configuration;
+import com.alta189.simplesave.mysql.MySQLConfiguration;
+import com.alta189.simplesave.query.Query;
+import com.alta189.simplesave.query.QueryType;
+import com.alta189.simplesave.sqlite.SQLiteConfiguration;
+import com.alta189.simplesave.sqlite.SQLiteConstants;
 
 public class SqlStorage implements Storage {
+	private final RegistryTable table = new RegistryTable();
+	private Database db;
+	private Configuration config;
+	private String dbName, hostName, username, password;
+	private int port;
+
+	public SqlStorage(Configuration config, String dbName, String hostName, String username, String password, int port) {
+		this.config = config;
+		this.dbName = dbName;
+		this.hostName = hostName;
+		this.username = username;
+		this.password = password;
+		this.port = port;
+	}
+
+
 	@Override
 	public void initialize() {
+		if (config instanceof SQLiteConfiguration) {
 
+		} else if (config instanceof H2Configuration) {
+
+		} else {
+			MySQLConfiguration mysql = (MySQLConfiguration) config;
+			mysql
+					.setDatabase(dbName)
+					.setHost(hostName)
+					.setUser(username)
+					.setPassword(password)
+					.setPort(port);
+		}
+		db = DatabaseFactory.createNewDatabase(config);
+
+		try {
+			db.registerTable(RegistryTable.class);
+		} catch (TableRegistrationException e) {
+			e.printStackTrace();
+		}
+
+		try {
+			db.connect();
+		} catch (ConnectionException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public Storage addLock(Lock lock) {
+		if (lock == null) {
+			throw new NullPointerException("Trying to add a null lock to the storage backend!");
+		}
+		table.id = 1;
+		table.lock = lock;
+		db.save(RegistryTable.class, table);
 		return this;
 	}
 
 	@Override
 	public Storage removeLock(Lock lock) {
+		if (lock == null) {
+			throw new NullPointerException("Trying to remove a null lock to the storage backend!");
+		}
+		table.id = 1;
+		table.lock = lock;
+		db.remove(RegistryTable.class, table);
 		return this;
 	}
 
 	@Override
 	public Collection<Lock> getAll() {
-		return null;
+		ArrayList<Lock> locks = new ArrayList<Lock>();
+		for (RegistryTable table : db.select(RegistryTable.class).execute().find()) {
+			locks.add(table.lock);
+		}
+		return Collections.unmodifiableCollection(locks);
 	}
 }
