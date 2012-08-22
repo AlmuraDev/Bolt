@@ -42,14 +42,10 @@ import com.alta189.simplesave.h2.H2Database;
 import com.alta189.simplesave.sqlite.SQLiteConfiguration;
 import com.alta189.simplesave.sqlite.SQLiteDatabase;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
 
 import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertNotSame;
 import static junit.framework.Assert.assertTrue;
 import static junit.framework.Assert.fail;
 
