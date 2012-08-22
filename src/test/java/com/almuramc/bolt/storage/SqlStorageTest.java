@@ -54,7 +54,7 @@ import static junit.framework.Assert.assertTrue;
 import static junit.framework.Assert.fail;
 
 public class SqlStorageTest {
-	//@Test
+	@Test
 	public void testSqlite() {
 		SQLiteConfiguration config = new SQLiteConfiguration();
 		File tmpfile = null;
