@@ -32,8 +32,7 @@ import java.util.UUID;
 import com.almuramc.bolt.lock.Lock;
 
 /**
- * The blueprint for an object representing a registry. Implementations are welcome to provide their
- * own characteristics,
+ * The blueprint for an object representing a registry.
  */
 public interface Registry {
 	/**
