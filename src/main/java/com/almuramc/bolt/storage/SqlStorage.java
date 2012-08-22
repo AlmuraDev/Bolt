@@ -49,6 +49,10 @@ public class SqlStorage implements Storage {
 	private String dbName, hostName, username, password;
 	private int port;
 
+	public SqlStorage(Configuration config, File dbLoc) {
+		this(config, dbLoc, "test", "localhost", "spouty", "unleashtheflow", 1337);
+	}
+
 	public SqlStorage(Configuration config, File dbLoc, String dbName, String hostName, String username, String password, int port) {
 		this.config = config;
 		this.dbLoc = dbLoc;

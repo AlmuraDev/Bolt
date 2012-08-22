@@ -139,7 +139,7 @@ public class SqlStorageTest {
 		} catch (IOException e) {
 			fail("Could not create temporary folder!");
 		}
-		SqlStorage storage = new SqlStorage(new H2Configuration(), test.toFile(), "bolt_storage", "localhost", "spouty", "unleashtheflow", 1337);
+		SqlStorage storage = new SqlStorage(new H2Configuration(), test.toFile());
 		storage.onLoad();
 		BasicLock a = new BasicLock("Charlie", null, UUID.randomUUID(), 1, 1, 1);
 		BasicLock b = new BasicLock("Charlie", null, UUID.randomUUID(), 1, 1, 1);
