@@ -70,6 +70,8 @@ public class SqlStorage implements Storage {
 		}
 		if (config instanceof SQLiteConfiguration) {
 			SQLiteConfiguration sqlite = (SQLiteConfiguration) config;
+			File sqliteDb = new File(dbLoc, "registry_db");
+			sqlite.setPath(sqliteDb.getAbsolutePath());
 			db = DatabaseFactory.createNewDatabase(sqlite);
 		} else if (config instanceof H2Configuration) {
 			H2Configuration h2 = (H2Configuration) config;
