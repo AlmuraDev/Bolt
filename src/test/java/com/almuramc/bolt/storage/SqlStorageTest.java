@@ -28,6 +28,8 @@ package com.almuramc.bolt.storage;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.UUID;
 
 import com.almuramc.bolt.lock.type.BasicLock;
@@ -40,12 +42,15 @@ import com.alta189.simplesave.h2.H2Database;
 import com.alta189.simplesave.sqlite.SQLiteConfiguration;
 import com.alta189.simplesave.sqlite.SQLiteDatabase;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNotSame;
+import static junit.framework.Assert.assertTrue;
 import static junit.framework.Assert.fail;
 
 public class SqlStorageTest {
@@ -124,5 +129,26 @@ public class SqlStorageTest {
 			fail("Failed to close database! " + e.toString());
 		}
 		tmpfile.delete();
+	}
+
+	@Test
+	public void testBackend() {
+		Path test = null;
+		try {
+			test = Files.createTempDirectory("test");
+		} catch (IOException e) {
+			fail("Could not create temporary folder!");
+		}
+		SqlStorage storage = new SqlStorage(new H2Configuration(), test.toFile(), "bolt_storage", "localhost", "spouty", "unleashtheflow", 1337);
+		storage.onLoad();
+		BasicLock a = new BasicLock("Charlie", null, UUID.randomUUID(), 1, 1, 1);
+		BasicLock b = new BasicLock("Charlie", null, UUID.randomUUID(), 1, 1, 1);
+		storage.addLock(a);
+		storage.addLock(b);
+		assertEquals(storage.getAll().size(), 2);
+		storage.removeLock(b);
+		assertEquals(storage.getAll().size(), 1);
+		assertTrue(storage.getAll().contains(a));
+		storage.onUnLoad();
 	}
 }

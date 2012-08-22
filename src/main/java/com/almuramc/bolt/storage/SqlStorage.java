@@ -26,6 +26,7 @@
  */
 package com.almuramc.bolt.storage;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -38,22 +39,19 @@ import com.alta189.simplesave.DatabaseFactory;
 import com.alta189.simplesave.exceptions.ConnectionException;
 import com.alta189.simplesave.exceptions.TableRegistrationException;
 import com.alta189.simplesave.h2.H2Configuration;
-import com.alta189.simplesave.h2.H2Database;
 import com.alta189.simplesave.mysql.MySQLConfiguration;
-import com.alta189.simplesave.query.Query;
-import com.alta189.simplesave.query.QueryType;
 import com.alta189.simplesave.sqlite.SQLiteConfiguration;
-import com.alta189.simplesave.sqlite.SQLiteConstants;
-import com.alta189.simplesave.sqlite.SQLiteDatabase;
 
 public class SqlStorage implements Storage {
+	private final File dbLoc;
 	private Database db;
 	private Configuration config;
 	private String dbName, hostName, username, password;
 	private int port;
 
-	public SqlStorage(Configuration config, String dbName, String hostName, String username, String password, int port) {
+	public SqlStorage(Configuration config, File dbLoc, String dbName, String hostName, String username, String password, int port) {
 		this.config = config;
+		this.dbLoc = dbLoc;
 		this.dbName = dbName;
 		this.hostName = hostName;
 		this.username = username;
@@ -62,12 +60,17 @@ public class SqlStorage implements Storage {
 	}
 
 	@Override
-	public void initialize() {
+	public void onLoad() {
+		if (!dbLoc.exists()) {
+			dbLoc.mkdirs();
+		}
 		if (config instanceof SQLiteConfiguration) {
 			SQLiteConfiguration sqlite = (SQLiteConfiguration) config;
 			db = DatabaseFactory.createNewDatabase(sqlite);
 		} else if (config instanceof H2Configuration) {
 			H2Configuration h2 = (H2Configuration) config;
+			File h2Db = new File(dbLoc, "registry_db");
+			h2.setDatabase(h2Db.getAbsolutePath());
 			db = DatabaseFactory.createNewDatabase(h2);
 		} else {
 			MySQLConfiguration mysql = (MySQLConfiguration) config;
@@ -88,6 +91,15 @@ public class SqlStorage implements Storage {
 
 		try {
 			db.connect();
+		} catch (ConnectionException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void onUnLoad() {
+		try {
+			db.close();
 		} catch (ConnectionException e) {
 			e.printStackTrace();
 		}

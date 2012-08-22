@@ -35,9 +35,14 @@ import com.almuramc.bolt.lock.Lock;
  */
 public interface Storage {
 	/**
-	 * Initializes the storage backend.
+	 * Loads the storage backend.
 	 */
-	public void initialize();
+	public void onLoad();
+
+	/**
+	 * Unloads the storage backend.
+	 */
+	public void onUnLoad();
 
 	/**
 	 * Adds a lock to the storage backend.
