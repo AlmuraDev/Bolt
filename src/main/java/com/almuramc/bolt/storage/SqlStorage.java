@@ -45,7 +45,6 @@ import com.alta189.simplesave.sqlite.SQLiteConfiguration;
 import com.alta189.simplesave.sqlite.SQLiteConstants;
 
 public class SqlStorage implements Storage {
-	private final RegistryTable table = new RegistryTable();
 	private Database db;
 	private Configuration config;
 	private String dbName, hostName, username, password;
@@ -96,9 +95,7 @@ public class SqlStorage implements Storage {
 		if (lock == null) {
 			throw new NullPointerException("Trying to add a null lock to the storage backend!");
 		}
-		table.id = 1;
-		table.lock = lock;
-		db.save(RegistryTable.class, table);
+		db.save(new RegistryTable(lock));
 		return this;
 	}
 
@@ -107,17 +104,18 @@ public class SqlStorage implements Storage {
 		if (lock == null) {
 			throw new NullPointerException("Trying to remove a null lock to the storage backend!");
 		}
-		table.id = 1;
-		table.lock = lock;
-		db.remove(RegistryTable.class, table);
+		RegistryTable entry = db.select(RegistryTable.class).where().equal("lock", lock).execute().findOne();
+		if (entry != null) {
+			db.remove(entry);
+		}
 		return this;
 	}
 
 	@Override
 	public Collection<Lock> getAll() {
 		ArrayList<Lock> locks = new ArrayList<Lock>();
-		for (RegistryTable table : db.select(RegistryTable.class).execute().find()) {
-			locks.add(table.lock);
+		for (RegistryTable entry : db.select(RegistryTable.class).execute().find()) {
+			locks.add(entry.getLock());
 		}
 		return Collections.unmodifiableCollection(locks);
 	}

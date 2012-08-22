@@ -34,7 +34,26 @@ import com.alta189.simplesave.Table;
 @Table("bolt_registry")
 public class RegistryTable {
 	@Id
-	public int id;
+	private int id;
 	@Field
-	public Lock lock;
+	private Lock lock;
+
+	public RegistryTable() {
+	}
+
+	public RegistryTable(Lock lock) {
+		this.lock = lock;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public Lock getLock() {
+		return lock;
+	}
+
+	public void setLock(Lock lock) {
+		this.lock = lock;
+	}
 }
