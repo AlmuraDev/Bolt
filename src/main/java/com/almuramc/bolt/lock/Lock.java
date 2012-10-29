@@ -57,7 +57,11 @@ public interface Lock extends Serializable {
 	 * Sets the co-owners of this lock.
 	 * @param coowners List of names representing co-owners
 	 */
-	public void setCoOwners(List<String> coowners);
+	public void setCoOwners(String... coowners);
+
+	public List<String> getUsers();
+
+	public void setUsers(String... users);
 
 	/**
 	 * Gets the world uuid of this lock.

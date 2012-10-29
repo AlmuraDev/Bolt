@@ -76,7 +76,7 @@ public class SqlStorageTest {
 			fail("Failed to connect to database! " + e.toString());
 		}
 		final RegistryTable one = new RegistryTable();
-		one.setLock(new BasicLock("Charlie", null, UUID.randomUUID(), 1, 1, 1));
+		one.setLock(new BasicLock("Charlie", null, null, UUID.randomUUID(), 1, 1, 1));
 		db.save(RegistryTable.class, one);
 		assertEquals(db.select(RegistryTable.class).execute().find().size(), 1);
 		try {
@@ -89,8 +89,8 @@ public class SqlStorageTest {
 
 	@Test
 	public void testH2() {
-		final BasicLock test = new BasicLock("Charlie", null, UUID.randomUUID(), 1, 1, 1);
-		final BasicLock test2 = new BasicLock("Charlie", null, UUID.randomUUID(), 1, 1, 1);
+		final BasicLock test = new BasicLock("Charlie", null, null, UUID.randomUUID(), 1, 1, 1);
+		final BasicLock test2 = new BasicLock("Charlie", null, null, UUID.randomUUID(), 1, 1, 1);
 		H2Configuration h2 = new H2Configuration();
 		File tmpfile = null;
 		try {
@@ -137,8 +137,8 @@ public class SqlStorageTest {
 		}
 		SqlStorage storage = new SqlStorage(new H2Configuration(), test.toFile());
 		storage.onLoad();
-		BasicLock a = new BasicLock("Charlie", null, UUID.randomUUID(), 1, 1, 1);
-		BasicLock b = new BasicLock("Charlie", null, UUID.randomUUID(), 1, 1, 1);
+		BasicLock a = new BasicLock("Charlie", null, null, UUID.randomUUID(), 1, 1, 1);
+		BasicLock b = new BasicLock("Charlie", null, null, UUID.randomUUID(), 1, 1, 1);
 		storage.addLock(a);
 		storage.addLock(b);
 		assertEquals(storage.getAll().size(), 2);

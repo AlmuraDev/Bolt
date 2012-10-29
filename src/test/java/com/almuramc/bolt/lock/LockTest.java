@@ -40,16 +40,16 @@ public class LockTest {
 	@Test
 	public void lockEqualsTest() {
 		UUID testWorld = UUID.randomUUID();
-		BasicLock a = new BasicLock("Locksmith", null, testWorld, 1, 1, 1);
-		BasicLock b = new BasicLock("Locksmith", null, testWorld, 1, 1, 1);
+		BasicLock a = new BasicLock("Locksmith", null, null, testWorld, 1, 1, 1);
+		BasicLock b = new BasicLock("Locksmith", null, null, testWorld, 1, 1, 1);
 		assertEquals(a, b);
-		BasicLock c = new BasicLock("Spouty", null, testWorld, 1, 1, 1);
+		BasicLock c = new BasicLock("Spouty", null, null, testWorld, 1, 1, 1);
 		assertFalse(b.equals(c));
 
-		IdLock d = new IdLock("Locksmith", null, testWorld, 1, 1, 1, 1);
-		IdLock e = new IdLock("Locksmith", null, testWorld, 1, 1, 1, 1);
+		IdLock d = new IdLock("Locksmith", null, null, testWorld, 1, 1, 1, 1);
+		IdLock e = new IdLock("Locksmith", null, null, testWorld, 1, 1, 1, 1);
 		assertEquals(d, e);
-		IdLock f = new IdLock("Spouty", null, testWorld, 1, 1, 1, 1);
+		IdLock f = new IdLock("Spouty", null, null, testWorld, 1, 1, 1, 1);
 		assertFalse(e.equals(f));
 	}
 }

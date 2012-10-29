@@ -37,13 +37,13 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 public class IdLock extends BasicLock {
 	private int id;
 
-	public IdLock(String owner, List<String> coowners, UUID worldIdentifier, int x, int y, int z, int id) {
-		super(owner, coowners, worldIdentifier, x, y, z);
+	public IdLock(String owner, List<String> coowners, List<String> users, UUID worldIdentifier, int x, int y, int z, int id) {
+		super(owner, coowners, users, worldIdentifier, x, y, z);
 		this.id = id;
 	}
 
 	public IdLock(String owner, UUID worldIdentifier, int x, int y, int z, int id) {
-		this(owner, null, worldIdentifier, x, y, z, id);
+		this(owner, null, null, worldIdentifier, x, y, z, id);
 	}
 
 	/**

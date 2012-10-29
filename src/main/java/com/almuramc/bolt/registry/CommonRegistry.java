@@ -41,7 +41,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 /**
  * Simple registry of locks per world.
  */
-public class CommonRegistry implements Registry {
+public abstract class CommonRegistry implements Registry {
 	private final HashMap<UUID, TInt21TripleObjectHashMap<Lock>> registry;
 	//Hashcode
 	private boolean isHashed = false;

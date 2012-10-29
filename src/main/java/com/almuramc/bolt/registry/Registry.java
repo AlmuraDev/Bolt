@@ -30,11 +30,17 @@ import java.util.Collection;
 import java.util.UUID;
 
 import com.almuramc.bolt.lock.Lock;
+import com.almuramc.bolt.storage.Storage;
 
 /**
  * The blueprint for an object representing a registry.
  */
 public interface Registry {
+	/**
+	 * Called when the registry is initialized.
+	 */
+	public void onLoad(Storage storage);
+
 	/**
 	 * Adds a lock to the registry.
 	 * @param lock The lock to add
