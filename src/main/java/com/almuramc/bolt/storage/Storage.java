@@ -27,6 +27,7 @@
 package com.almuramc.bolt.storage;
 
 import java.util.Collection;
+import java.util.UUID;
 
 import com.almuramc.bolt.lock.Lock;
 

@@ -30,6 +30,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.UUID;
 
 import com.almuramc.bolt.lock.Lock;
 import com.almuramc.bolt.storage.sql.RegistryTable;
@@ -132,7 +133,7 @@ public class SqlStorage implements Storage {
 		return this;
 	}
 
-	@Override
+    @Override
 	public Collection<Lock> getAll() {
 		ArrayList<Lock> locks = new ArrayList<Lock>();
 		for (RegistryTable entry : db.select(RegistryTable.class).execute().find()) {
