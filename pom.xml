@@ -43,10 +43,9 @@
 
 	<repositories>
 		<repository>
-			<id>nexus</id>
-			<name>nexus.alta189</name>
-			<url>http://repo.alta189.com/</url>
-		</repository>
+			<id>spout-repo</id>
+			<url>http://repo.spout.org</url>
+		</repository> 
 	</repositories>
 
 	<!-- Dependencies -->
